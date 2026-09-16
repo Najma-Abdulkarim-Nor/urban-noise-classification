@@ -41,3 +41,73 @@
 Most classification errors occurred between `siren` and `car_horn` (spectral similarity), while `jackhammer` achieved high recall due to its distinctive broadband signature. Full precision/recall/F1 breakdowns and confusion matrices are generated in the notebook.
 
 ## 🧩 Method Overview
+
+```
+Audio Signal → Preprocessing (denoise, normalize, frame/window)
+             → ┬── Feature Extraction (MFCC, Chroma, Spectral) → Random Forest / SVM
+               └── Mel-Spectrogram (128×64)                    → CNN (3× Conv2D + MaxPool → Dense → Softmax)
+             → Evaluation (Accuracy, Precision/Recall/F1, Confusion Matrix)
+```
+
+- **Dataset:** UrbanSound8K, stratified 70 clips/class (210 total), 80/20 train/test split, seed 42
+- **Classical models:** 23-D feature vector (20 MFCCs, Chroma, Spectral Centroid, Spectral Rolloff), standardized
+- **CNN:** 128-band Mel-spectrogram input, 3 Conv2D blocks (16/32/64 filters), dropout, softmax output; Adam optimizer
+
+Full methodology, related work, and discussion are in the [paper](paper/).
+
+## 📁 Repository Structure
+
+```
+urban-noise-classification/
+├── notebooks/
+│   └── Urban_Noise_Monitoring_and_Classification.ipynb   # Full pipeline + Gradio demo
+├── paper/
+│   └── Urban_Noise_Monitoring_and_Classification_IEEE_SM2026.pdf
+├── presentation/
+│   └── urban_noise_presentation.pptx
+├── test_audio/                                            # Sample clips to try the demo
+├── requirements.txt
+├── LICENSE
+└── README.md
+```
+
+## 🚀 Quick Start
+
+```bash
+git clone https://github.com/Najma-Abdulkarim-Nor/urban-noise-classification.git
+cd urban-noise-classification
+pip install -r requirements.txt
+```
+
+1. Download [UrbanSound8K](https://urbansounddataset.weebly.com/urbansound8k.html) and update the `base_path` in the notebook (currently set for Google Colab / Drive).
+2. Open `notebooks/Urban_Noise_Monitoring_and_Classification.ipynb` and run all cells — this trains all three models and launches a **Gradio** demo where you can upload any `.wav` file (try the samples in `test_audio/`) and classify it live.
+
+## ⚠️ Limitations
+
+- Evaluated on a balanced 210-clip, 3-class subset for lightweight edge-deployment simulation — results may not generalize to the full 10-class UrbanSound8K benchmark.
+- High CNN accuracy may partly reflect limited data size and the absence of data augmentation.
+
+## 📖 Citation
+
+If you use this work, please cite:
+
+```bibtex
+@inproceedings{nour2026urban,
+  author    = {Nour, Najma and Alblooshi, Maryam and Elgazzar, Khalid},
+  title     = {Urban Noise Monitoring and Classification Using Machine Learning and Deep Learning},
+  booktitle = {2026 IEEE International Conference on Smart Mobility (SM)},
+  year      = {2026},
+  address   = {Al Alamein City, Egypt},
+  doi       = {10.1109/SM69703.2026.11614142}
+}
+```
+
+## 👥 Authors
+
+- **Najma Nour** — Canadian University Dubai, UAE
+- **Maryam Alblooshi** — Canadian University Dubai, UAE
+- **Khalid Elgazzar** — IoT Research Laboratory, Ontario Tech University, Canada
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
