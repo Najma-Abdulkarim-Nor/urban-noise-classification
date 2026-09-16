@@ -1,28 +1,43 @@
-# Urban Noise Monitoring and Classification
+<div align="center">
 
-[![Published in IEEE Xplore](https://img.shields.io/badge/Published-IEEE%20Xplore-00629B?logo=ieee&logoColor=white)](https://ieeexplore.ieee.org/document/11614142) [![DOI](https://img.shields.io/badge/DOI-10.1109%2FSM69703.2026.11614142-blue)](https://doi.org/10.1109/SM69703.2026.11614142)
+# 🔊 Urban Noise Monitoring and Classification Using Machine Learning and Deep Learning
 
-Comparative evaluation of **Random Forest**, **SVM**, and a **CNN** for automated urban sound classification, built on the UrbanSound8K dataset. This work was published at the **2026 IEEE International Conference on Smart Mobility (SM2026)**, held 11–13 May 2026 in Al Alamein City, Egypt, and is now indexed in IEEE Xplore.
+**Najma Nour**¹ · **Maryam Alblooshi**¹ · **Khalid Elgazzar**²
 
-📄 **Paper:** [ieeexplore.ieee.org/document/11614142](https://ieeexplore.ieee.org/document/11614142) &nbsp;|&nbsp; **DOI:** [10.1109/SM69703.2026.11614142](https://doi.org/10.1109/SM69703.2026.11614142)
+¹Canadian University Dubai, UAE &nbsp;&nbsp;·&nbsp;&nbsp; ²IoT Research Laboratory, Ontario Tech University, Canada
 
-## Overview
+**2026 IEEE International Conference on Smart Mobility (SM2026)** · Al Alamein City, Egypt · 11–13 May 2026
 
-Urban noise pollution — from traffic, construction, and emergency sirens — degrades quality of life and is difficult to manage without automated, real-time source identification. This project implements and compares three classifiers on three acoustically distinct UrbanSound8K classes (`car_horn`, `jackhammer`, `siren`) to evaluate their suitability for real-time smart-city acoustic monitoring, using Dubai as the motivating use case.
+[![Paper](https://img.shields.io/badge/IEEE%20Xplore-Paper-00629B?logo=ieee&logoColor=white)](https://ieeexplore.ieee.org/document/11614142)
+[![DOI](https://img.shields.io/badge/DOI-10.1109%2FSM69703.2026.11614142-blue)](https://doi.org/10.1109/SM69703.2026.11614142)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?logo=tensorflow&logoColor=white)](https://www.tensorflow.org/)
 
-| Model | Accuracy | Notes |
-|---|---|---|
-| Random Forest | **91.4%** | Hybrid hand-crafted features; strong in resource-constrained settings |
-| SVM (RBF) | **88.6%** | Most sensitive to overlapping acoustic features (siren vs. car horn) |
-| CNN | **97.1%** | Learns directly from mel-spectrograms; best overall performance |
+</div>
 
-## Methodology
+---
 
-- **Dataset:** UrbanSound8K, stratified subset of 70 clips per class (210 total), 80/20 train/test split, fixed seed (42) for reproducibility.
-- **Classical models (RF, SVM):** 23-D hand-crafted feature vector — 20 MFCCs (mean), mean Chroma, Spectral Centroid, Spectral Rolloff — standardized to zero mean/unit variance.
-- **CNN:** 128-band mel-spectrogram input (128×64), 3 convolutional blocks (16/32/64 filters) with max-pooling, a dense layer with dropout, and softmax output. Trained with Adam and sparse categorical cross-entropy.
-- **Evaluation:** Accuracy, per-class precision/recall/F1, and confusion matrices on a held-out test set.
+## 📝 Abstract
 
-Full methodology, related work, and discussion are in the [paper](paper/).
+> Urban environmental noise threatens public health and complicates smart city management. This paper presents a comparative evaluation of three classifiers — Random Forest (RF), Support Vector Machine (SVM), and Convolutional Neural Network (CNN) — for automated urban sound classification using the UrbanSound8K dataset. A hybrid feature extraction pipeline of MFCCs, Chroma, Spectral Centroid, and Spectral Rolloff feeds the classical models, while a Mel-spectrogram representation feeds the CNN. Experimental results show the CNN achieves the highest accuracy (**97.1%**), followed by RF (**91.4%**) and SVM (**88.6%**), highlighting the value of deep representation learning for real-time traffic noise analysis and smart mobility applications.
 
-## Repository Structure
+## 🔑 Highlights
+
+- 🏆 **CNN reaches 97.1% test accuracy**, outperforming classical RF/SVM baselines on a 3-class UrbanSound8K subset (`car_horn`, `jackhammer`, `siren`)
+- 🧠 **Hybrid feature pipeline** — hand-crafted MFCC/Chroma/Spectral features for classical models vs. learned Mel-spectrogram representations for the CNN
+- ⚡ **Lightweight, edge-deployable models** — designed for real-time smart-city acoustic sensor deployment, not just offline benchmarking
+- 🎛️ **Interactive Gradio demo** included — classify your own `.wav` file with any of the three trained models
+- 🔁 **Fully reproducible** — fixed seed (42), stratified splits, documented hyperparameters throughout
+
+## 📊 Results
+
+| Model | Accuracy | Macro F1 | Notes |
+|:---|:---:|:---:|:---|
+| Random Forest | 91.4% | 0.92 | 150 trees, hybrid hand-crafted features — strong in resource-constrained settings |
+| SVM (RBF) | 88.6% | — | Most sensitive to overlapping acoustic features (siren ↔ car horn) |
+| **CNN** | **97.1%** | — | 3-block Conv2D on Mel-spectrograms — best overall, real-time capable |
+
+Most classification errors occurred between `siren` and `car_horn` (spectral similarity), while `jackhammer` achieved high recall due to its distinctive broadband signature. Full precision/recall/F1 breakdowns and confusion matrices are generated in the notebook.
+
+## 🧩 Method Overview
